@@ -1,0 +1,105 @@
+import java.util.Scanner;
+
+class Atm {
+    private int accountnumber;
+    private int balance;
+    private int pin;
+
+    public Atm(int pin) {
+        this.pin = pin;
+    }
+
+    public void pincode(int pin) {
+        if (pin < 1000 || pin > 9999) {
+            throw new IllegalArgumentException("Please enter a valid 4-digit pin code.");
+        }
+        System.out.println("*** Welcome! ***");
+    }
+
+    public void pincodechange(int oldpin, int newpin) {
+        if (oldpin == pin) {
+            pin = newpin;
+            System.out.println("Your pin code has been changed successfully.");
+        } else {
+            throw new IllegalArgumentException("Invalid old pin code.");
+        }
+    }
+
+    public void deposit(int amt) {
+        if (amt <= 0) {
+            throw new IllegalArgumentException("Deposit amount must be positive.");
+        }
+        balance = balance + amt;
+        System.out.println("Amount deposited successfully. Your current balance is: " + balance);
+    }
+
+    public void withdraw(int amt) {
+        if (amt > balance) {
+            throw new IllegalArgumentException("Insufficient balance.");
+        }
+        balance = balance - amt;
+        System.out.println("Amount withdrawn successfully. Your current balance is: " + balance);
+    }
+
+    public void mybalance() {
+        System.out.println("Your balance is: " + balance);
+    }
+}
+
+public class j2 {
+    public static void main(String[] args) {
+        System.out.println("Welcome to ATM");
+
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter your 4-digit PIN:");
+        int enteredPin = sc.nextInt();
+
+        Atm atm = new Atm(enteredPin);
+
+        try {
+            atm.pincode(enteredPin);
+
+            while (true) {
+                System.out.println("1. Check bank balance");
+                System.out.println("2. Deposit amount");
+                System.out.println("3. Withdraw amount");
+                System.out.println("4. Change PIN");
+                System.out.println("5. Exit");
+                System.out.println("Enter your choice:");
+
+                int choice = sc.nextInt();
+                switch (choice) {
+                    case 1:
+                        atm.mybalance();
+                        break;
+                    case 2:
+                        System.out.println("Enter the amount to deposit:");
+                        int depositAmt = sc.nextInt();
+                        atm.deposit(depositAmt);
+                        break;
+                    case 3:
+                        System.out.println("Enter the amount to withdraw:");
+                        int withdrawAmt = sc.nextInt();
+                        atm.withdraw(withdrawAmt);
+                        break;
+                    case 4:
+                        System.out.println("Enter your old PIN:");
+                        int oldPin = sc.nextInt();
+                        System.out.println("Enter your new PIN:");
+                        int newPin = sc.nextInt();
+                        atm.pincodechange(oldPin, newPin);
+                        break;
+                    case 5:
+                        System.out.println("Thank you for using the ATM.");
+                        System.exit(0);
+                    default:
+                        System.out.println("Invalid choice. Please try again.");
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        } finally {
+            sc.close();
+        }
+    }
+}
